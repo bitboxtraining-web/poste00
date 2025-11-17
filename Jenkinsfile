@@ -72,17 +72,21 @@ pipeline {
     }
         }
 
-        /* ----- 5. DEPLOY : seulement main ----- */
-        stage('Deploy to Production') {
-            when { branch "main" }
-            steps {
-                sh """
-                ssh root@VM 'docker pull ${REGISTRY}/backend:main'
-                ssh root@VM 'docker compose -f /srv/app/docker-compose.yml up -d'
-                """
-            }
-        }
+      /* ----- 5. DEPLOY : seulement main ----- */
+stage('Deploy to Production') {
+    when { branch "main" }
+    steps {
+        sh """
+        ssh -o StrictHostKeyChecking=no debian@217.182.207.167 '
+            sudo docker pull ${REGISTRY}/backend:main &&
+            sudo docker stop backend || true &&
+            sudo docker rm backend || true &&
+            sudo docker run -d --name backend -p 8080:8080 ${REGISTRY}/backend:main
+        '
+        """
     }
+}
+
 
     /*
      * OPTIONS : notifications / clean workspace / discard old builds
