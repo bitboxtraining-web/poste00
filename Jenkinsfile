@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY = "vps-XXXXX.ovh.net:5000"
+        REGISTRY = "vps-36f602ea.vps.ovh.net:5000"
         SONAR_URL = "http://vps-XXXXX.ovh.net:9000"
     }
 
