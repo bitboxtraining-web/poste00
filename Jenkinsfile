@@ -62,12 +62,14 @@ pipeline {
                     expression { env.BRANCH_NAME.startsWith("release/") }
                 }
             }
-            steps {
-                sh """
-                docker build -t ${REGISTRY}/backend:${BRANCH_NAME} .
-                docker push ${REGISTRY}/backend:${BRANCH_NAME}
-                """
-            }
+           steps {
+        dir('backend-demo') {
+            sh """
+            docker build -t ${REGISTRY}/backend:${BRANCH_NAME} .
+            docker push ${REGISTRY}/backend:${BRANCH_NAME}
+            """
+        }
+    }
         }
 
         /* ----- 5. DEPLOY : seulement main ----- */
