@@ -28,8 +28,15 @@ pipeline {
 
         /* ----- 2. BUILD pour TOUT ----- */
         stage('Build Maven') {
+            
             steps {
-                sh 'mvn clean package -DskipTests'
+
+                dir('backend-demo') {
+                        sh '''
+                            mvn clean package -DskipTests   
+                    '''
+                    }
+                
             }
         }
 
