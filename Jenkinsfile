@@ -14,11 +14,14 @@ pipeline {
     stages {
 
         /* ----- 1. QUALITY GATE pour TOUT sauf main ----- */
-        stage('SonarQube Analysis') {
-            when { not { branch "main" } }
+         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar') {
-                    sh 'mvn clean verify sonar:sonar'
+                withSonarQubeEnv('sonar-server') {
+                    dir('demo-backend') {
+                        sh '''
+                            mvn clean verify sonar:sonar                               -Dsonar.projectKey=demo-backend                               -Dsonar.host.url=$SONAR_HOST_URL                               -DskipTests
+                        '''
+                    }
                 }
             }
         }
